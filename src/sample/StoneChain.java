@@ -31,14 +31,29 @@ public class StoneChain
         return copy;
     }
 
-    public void mergeStoneChains(StoneChain s)
+    /*public void mergeStoneChains(StoneChain s)
     {
         stoneList.addAll(s.copy().getStoneList());
         s.destroyChain();
-    }
+    }*/
 
     public void destroyChain()
     {
         this.stoneList = null;
+    }
+
+    public String toString()
+    {
+        String ret = "";
+        for (Stone stone: stoneList)
+        {
+            ret = ret + stone.toString() + " ";
+        }
+        return ret;
+    }
+
+    public void addAll(StoneChain chain)
+    {
+        this.stoneList.addAll(chain.getStoneList());
     }
 }
