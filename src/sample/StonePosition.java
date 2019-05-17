@@ -47,4 +47,36 @@ public class StonePosition
     public int getY() {
         return y;
     }
+
+    public boolean isOnTopWall()
+    {
+        if(stonePosition == Position.UP_WALL || stonePosition == Position.L_U_CORNER || stonePosition == Position.R_U_CORNER)
+            return true;
+        else
+            return false;
+    }
+
+    public boolean isOnBottomWall()
+    {
+        if(stonePosition == Position.DOWN_WALL|| stonePosition == Position.L_D_CORNER || stonePosition == Position.R_D_CORNER)
+            return true;
+        else
+            return false;
+    }
+
+    public boolean isOnLeftWall()
+    {
+        if(stonePosition == Position.LEFT_WALL || stonePosition == Position.L_U_CORNER || stonePosition == Position.L_D_CORNER)
+            return true;
+        else
+            return false;
+    }
+
+    public boolean isOnRightWall()
+    {
+        if(stonePosition == Position.RIGHT_WALL || stonePosition == Position.R_U_CORNER || stonePosition == Position.R_D_CORNER)
+            return true;
+        else
+            return false;
+    }
 }

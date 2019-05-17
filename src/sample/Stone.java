@@ -1,14 +1,13 @@
 package sample;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Stone
 {
@@ -17,7 +16,7 @@ public class Stone
     private static Player players;
     private static Board board;
     private Color stoneColor;
-
+    private boolean freePlace;
     private StoneChain stoneChain;
     private StonePosition stonePosition;
 
@@ -30,6 +29,7 @@ public class Stone
         button.setOpacity(0);
         pane.getChildren().add(button);
         button.setOnAction(actionEvent -> {
+            freePlace = false;
             Circle c = new Circle();
             c.setRadius(30);
             c.setLayoutX(button.getLayoutX() + 30);
@@ -38,30 +38,42 @@ public class Stone
             c.setFill(stoneColor);
             players.flipColor();
             c.setEffect(new DropShadow());
+            c.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    System.out.println(stoneChain.toString() + " " + stoneChain.getLiberties());
+                }
+            });
             button.setVisible(false);
 
             StoneChain[] nearChains = stoneChainsNear();
-            if(nearChains == null)
+            if(nearChains == null)  //tu jak nie ma zadnego lanucha dookola
             {
                 stoneChain = new StoneChain();
                 stoneChain.addStone(this);
-                System.out.println(stoneChain.getStoneList());
+                //System.out.println(stoneChain.getStoneList());
             }
-            else
+            else//tutaj trzeba polaczyc ze soba wszystkie lancuchy
             {
-                //tutaj trzeba polaczyc ze soba wszystkie lancuchy
                 StoneChain newStoneChain = new StoneChain();
+                stoneChain = newStoneChain;
+                newStoneChain.addStone(this);
                 for (int i = 0; i < 4; i++)
                 {
                     if(nearChains[i] != null)
                     {
-
+                        for (Stone stone : nearChains[i].getStoneList())
+                        {
+                            stone.setStoneChain(newStoneChain);
+                            newStoneChain.addStone(stone);
+                        }
                     }
                 }
+                //System.out.println(stoneChain.toString());
             }
-
             pane.getChildren().add(c);
-            System.out.println(stonePosition.toString());
+            board.countAllLiberties();
+            //System.out.println(stonePosition.toString());
         });
     }
 
@@ -80,6 +92,7 @@ public class Stone
         players = new Player();
         this.pane = pane;
         button = new Button();
+        freePlace = true;
         initButton(x, y);
     }
 
@@ -98,9 +111,9 @@ public class Stone
         int x = stonePosition.getX();
         int y = stonePosition.getY();
         boolean nothingNear = true;
-        if(p != Position.UP_WALL && p != Position.L_U_CORNER && p != Position.R_U_CORNER)       //jesli nie jest gdzies na gorze to sprawdzamy czy powyzej jest lancuch
+        if(!stonePosition.isOnTopWall())       //jesli nie jest gdzies na gorze to sprawdzamy czy powyzej jest lancuch
         {
-            if(board.stonePlaced(x, y - 1) && board.getStone(x, y - 1).getStoneColor() == stoneColor)       //jesli jest tam kamien i jest on tego samego koloru
+            if(isStoneUP() && board.getStone(x, y - 1).getStoneColor() == stoneColor)       //jesli jest tam kamien i jest on tego samego koloru
             {
                 Stone s = board.getStone(x , y - 1);
                 if(s.getStoneChain() != stoneChain)            //jesli nie jest to kamien z tego samego lancucha
@@ -111,9 +124,9 @@ public class Stone
             }
         }
 
-        if(p != Position.DOWN_WALL && p != Position.L_D_CORNER && p != Position.R_D_CORNER)     //jesli nie jest gdzies na dole to sprawdzamy czy ponizej jest lancuch
+        if(!stonePosition.isOnBottomWall())     //jesli nie jest gdzies na dole to sprawdzamy czy ponizej jest lancuch
         {
-            if(board.stonePlaced(x, y + 1) && board.getStone(x, y + 1).getStoneColor() == stoneColor)       //jesli jest tam kamien i jest on tego samego koloru
+            if(isStoneDOWN() && board.getStone(x, y + 1).getStoneColor() == stoneColor)       //jesli jest tam kamien i jest on tego samego koloru
             {
                 Stone s = board.getStone(x, y + 1);
                 if(s.getStoneChain() != stoneChain)            //jesli nie jest to kamien z tego samego lancucha
@@ -124,9 +137,9 @@ public class Stone
             }
         }
 
-        if(p != Position.LEFT_WALL && p != Position.L_U_CORNER && p != Position.L_D_CORNER)     //jesli nie jest gdzies po lewej to sprawdzamy czy po lewej jest lancuch
+        if(!stonePosition.isOnLeftWall())     //jesli nie jest gdzies po lewej to sprawdzamy czy po lewej jest lancuch
         {
-            if(board.stonePlaced(x - 1,y) && board.getStone(x - 1, y).getStoneColor() == stoneColor)       //jesli jest tam kamien i jest on tego samego koloru
+            if(isStoneLEFT() && board.getStone(x - 1, y).getStoneColor() == stoneColor)       //jesli jest tam kamien i jest on tego samego koloru
             {
                 Stone s = board.getStone(x - 1, y);
                 if(s.getStoneChain() != stoneChain)            //jesli nie jest to kamien z tego samego lancucha
@@ -137,9 +150,9 @@ public class Stone
             }
         }
 
-        if(p != Position.RIGHT_WALL && p != Position.R_U_CORNER && p != Position.R_D_CORNER)    //jesli nie jest gdzies po prawej to sprawdzamy czy po prawej jest lancuch
+        if(!stonePosition.isOnRightWall())    //jesli nie jest gdzies po prawej to sprawdzamy czy po prawej jest lancuch
         {
-            if(board.stonePlaced(x + 1 ,y) && board.getStone(x + 1, y).getStoneColor() == stoneColor)       //jesli jest tam kamien i jest on tego samego koloru
+            if(isStoneRIGHT() && board.getStone(x + 1, y).getStoneColor() == stoneColor)       //jesli jest tam kamien i jest on tego samego koloru
             {
                 Stone s = board.getStone(x + 1, y);
                 if(s.getStoneChain() != stoneChain)            //jesli nie jest to kamien z tego samego lancucha
@@ -161,10 +174,7 @@ public class Stone
 
     public boolean isPlaced()
     {
-        if(this.stoneColor != null)
-            return true;
-        else
-            return false;
+        return !freePlace;
     }
 
     public Color getStoneColor()
@@ -180,5 +190,37 @@ public class Stone
     public StoneChain getStoneChain()
     {
         return stoneChain;
+    }
+
+    public boolean isStoneUP()
+    {
+        if(!stonePosition.isOnTopWall() && board.getStone(stonePosition.getX(), stonePosition.getY() - 1).freePlace)
+            return false;
+        else
+            return true;
+    }
+
+    public boolean isStoneDOWN()
+    {
+        if(!stonePosition.isOnBottomWall() && board.getStone(stonePosition.getX(), stonePosition.getY() + 1).freePlace)
+            return false;
+        else
+            return true;
+    }
+
+    public boolean isStoneLEFT()
+    {
+        if(!stonePosition.isOnLeftWall() && board.getStone(stonePosition.getX() - 1, stonePosition.getY()).freePlace)
+            return false;
+        else
+            return true;
+    }
+
+    public boolean isStoneRIGHT()
+    {
+        if(!stonePosition.isOnRightWall() && board.getStone(stonePosition.getX() + 1, stonePosition.getY()).freePlace)
+            return false;
+        else
+            return true;
     }
 }

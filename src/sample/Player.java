@@ -21,7 +21,11 @@ public class Player
 
     public Color getColor()
     {
-        return this.color;
+        //return this.color;
+        if(color == Color.BLACK)
+            return Color.BLACK;
+        else
+            return Color.WHITE;
     }
 
 }

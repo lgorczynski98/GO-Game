@@ -6,6 +6,7 @@ import java.util.List;
 public class StoneChain
 {
     private List<Stone> stoneList;
+    private int liberties;
 
     public StoneChain()
     {
@@ -55,5 +56,28 @@ public class StoneChain
     public void addAll(StoneChain chain)
     {
         this.stoneList.addAll(chain.getStoneList());
+    }
+
+    public void countLiberties()
+    {
+        int l = 0;
+        for (Stone stone : stoneList)
+        {
+            if (!stone.isStoneUP())
+                l++;
+            if (!stone.isStoneDOWN())
+                l++;
+            if (!stone.isStoneLEFT())
+                l++;
+            if (!stone.isStoneRIGHT())
+                l++;
+        }
+        liberties = l;
+        if (liberties == 0)// TODO: 18.05.2019 brakuje juz tylko usuwania kamieni gdy 0 oddechow 
+            System.out.println(toString() + " 0 liberties");
+    }
+
+    public int getLiberties() {
+        return liberties;
     }
 }
