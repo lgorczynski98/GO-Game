@@ -3,6 +3,12 @@ package sample;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO: 18.05.2019 nie wiem czy nie trzeba jeszcze raz liczyc oddechow jesli jakis lancuch zostal usuniety 
+// TODO: 18.05.2019 zrobic liczenie punktow 
+// TODO: 18.05.2019 zrobic mozliwosc passowania i konczenia tym gry 
+// TODO: 18.05.2019 moze dodac zmiene rozmiaru planszy 
+// TODO: 18.05.2019 dodac mozliwosc rozpoczecia gry od nowa 
+
 public class StoneChain
 {
     private List<Stone> stoneList;
@@ -40,7 +46,10 @@ public class StoneChain
 
     public void destroyChain()
     {
-        this.stoneList = null;
+        for (Stone stone : stoneList)
+        {
+            stone.destroyStone();
+        }
     }
 
     public String toString()
@@ -73,8 +82,11 @@ public class StoneChain
                 l++;
         }
         liberties = l;
-        if (liberties == 0)// TODO: 18.05.2019 brakuje juz tylko usuwania kamieni gdy 0 oddechow 
+        if (liberties == 0)
+        {
             System.out.println(toString() + " 0 liberties");
+            destroyChain();
+        }
     }
 
     public int getLiberties() {

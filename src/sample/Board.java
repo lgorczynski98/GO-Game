@@ -55,7 +55,7 @@ public class Board
 
         for (StoneChain stoneChain : s)
         {
-            if(stoneChain != null)stoneChain.countLiberties();
+            if(stoneChain != null) stoneChain.countLiberties();
         }
     }
 }

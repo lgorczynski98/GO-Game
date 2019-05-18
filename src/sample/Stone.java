@@ -19,6 +19,7 @@ public class Stone
     private boolean freePlace;
     private StoneChain stoneChain;
     private StonePosition stonePosition;
+    private Circle stone;
 
     public void initButton(int x, int y)
     {
@@ -30,15 +31,15 @@ public class Stone
         pane.getChildren().add(button);
         button.setOnAction(actionEvent -> {
             freePlace = false;
-            Circle c = new Circle();
-            c.setRadius(30);
-            c.setLayoutX(button.getLayoutX() + 30);
-            c.setLayoutY(button.getLayoutY() + 30);
+            stone = new Circle();
+            stone.setRadius(30);
+            stone.setLayoutX(button.getLayoutX() + 30);
+            stone.setLayoutY(button.getLayoutY() + 30);
             stoneColor = players.getColor();
-            c.setFill(stoneColor);
+            stone.setFill(stoneColor);
             players.flipColor();
-            c.setEffect(new DropShadow());
-            c.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            stone.setEffect(new DropShadow());
+            stone.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
                     System.out.println(stoneChain.toString() + " " + stoneChain.getLiberties());
@@ -71,7 +72,7 @@ public class Stone
                 }
                 //System.out.println(stoneChain.toString());
             }
-            pane.getChildren().add(c);
+            pane.getChildren().add(stone);
             board.countAllLiberties();
             //System.out.println(stonePosition.toString());
         });
@@ -89,7 +90,6 @@ public class Stone
 
     public Stone(Pane pane ,int x, int y)
     {
-        players = new Player();
         this.pane = pane;
         button = new Button();
         freePlace = true;
@@ -222,5 +222,14 @@ public class Stone
             return false;
         else
             return true;
+    }
+
+    public void destroyStone()
+    {
+        pane.getChildren().remove(stone);
+        freePlace = true;
+        stoneColor = null;
+        button.setVisible(true);
+        stoneChain = null;
     }
 }
