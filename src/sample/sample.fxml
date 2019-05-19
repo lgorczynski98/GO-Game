@@ -1,12 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
 
-<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="660.0" prefWidth="659.0" style="-fx-background-color: #c19a6b;" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="731.0" prefWidth="659.0" style="-fx-background-color: #c19a6b;" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
+      <ToolBar fx:id="toolbar" layoutX="30.0" layoutY="659.0" prefHeight="40.0" prefWidth="600.0" style="-fx-background-color: #c19a6b;">
+        <items>
+          <Button fx:id="newGameButton" alignment="CENTER_RIGHT" mnemonicParsing="false" style="-fx-background-color: #d2ab7c;" text="New Game" translateX="400.0">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font size="18.0" />
+               </font></Button>
+            <Button fx:id="undoButton" alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" style="-fx-background-color: #d2ab7c;" text="Undo" textAlignment="CENTER" translateX="400.0">
+               <font>
+                  <Font size="18.0" />
+               </font></Button>
+            <Circle id="turn" fx:id="turn" radius="19.0" stroke="BLACK" strokeType="INSIDE" translateX="-200.0" />
+        </items>
+      </ToolBar>
       <GridPane fx:id="gridPane" gridLinesVisible="true" layoutX="30.0" layoutY="30.0" prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: #c19a6b;">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

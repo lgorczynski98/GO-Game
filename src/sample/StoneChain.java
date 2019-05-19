@@ -7,7 +7,7 @@ import java.util.List;
 // TODO: 18.05.2019 zrobic liczenie punktow 
 // TODO: 18.05.2019 zrobic mozliwosc passowania i konczenia tym gry 
 // TODO: 18.05.2019 moze dodac zmiene rozmiaru planszy 
-// TODO: 18.05.2019 dodac mozliwosc rozpoczecia gry od nowa 
+// TODO: 18.05.2019 dodac mozliwosc rozpoczecia gry od nowa
 
 public class StoneChain
 {
@@ -37,12 +37,6 @@ public class StoneChain
         }
         return copy;
     }
-
-    /*public void mergeStoneChains(StoneChain s)
-    {
-        stoneList.addAll(s.copy().getStoneList());
-        s.destroyChain();
-    }*/
 
     public void destroyChain()
     {

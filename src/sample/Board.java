@@ -2,9 +2,9 @@ package sample;
 
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Circle;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 public class Board
@@ -12,6 +12,7 @@ public class Board
     public static final int MAX_SIZE = 10;
 
     @FXML private Pane pane;
+    @FXML public Circle turn;
     private Stone[][] stones;
     private Player players;
 
@@ -44,18 +45,30 @@ public class Board
 
     public void countAllLiberties()
     {
-        Set<StoneChain> s = new HashSet();
+        Set<StoneChain> nowPlacing = new HashSet<>();
+        Set<StoneChain> other = new HashSet<>();
         for (int i = 0; i < MAX_SIZE; i++)
         {
             for (int j = 0; j < MAX_SIZE; j++)
             {
-                s.add(stones[i][j].getStoneChain());
+                if(stones[i][j] != null)
+                {
+                    if(stones[i][j].getStoneColor() == players.getColor())
+                        nowPlacing.add(stones[i][j].getStoneChain());
+                    else
+                        other.add(stones[i][j].getStoneChain());
+                }
             }
         }
 
-        for (StoneChain stoneChain : s)
+        for (StoneChain chain : other)
         {
-            if(stoneChain != null) stoneChain.countLiberties();
+            if(chain != null) chain.countLiberties();
+        }
+
+        for (StoneChain chain : nowPlacing)
+        {
+            if(chain != null) chain.countLiberties();
         }
     }
 }

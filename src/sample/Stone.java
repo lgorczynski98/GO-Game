@@ -37,7 +37,6 @@ public class Stone
             stone.setLayoutY(button.getLayoutY() + 30);
             stoneColor = players.getColor();
             stone.setFill(stoneColor);
-            players.flipColor();
             stone.setEffect(new DropShadow());
             stone.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
@@ -75,6 +74,8 @@ public class Stone
             pane.getChildren().add(stone);
             board.countAllLiberties();
             //System.out.println(stonePosition.toString());
+            players.flipColor();//to na sam koniec trzeba zeby po wszystkim dopiero gracz sie zmienial
+            //board.turn.setFill(players.getColor());
         });
     }
 
