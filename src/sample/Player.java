@@ -28,4 +28,7 @@ public class Player
             return Color.WHITE;
     }
 
+    public void setColor(Color color) {
+        this.color = color;
+    }
 }

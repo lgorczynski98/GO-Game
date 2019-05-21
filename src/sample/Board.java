@@ -2,7 +2,7 @@ package sample;
 
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Circle;
+import javafx.scene.paint.Color;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,7 +12,6 @@ public class Board
     public static final int MAX_SIZE = 10;
 
     @FXML private Pane pane;
-    @FXML public Circle turn;
     private Stone[][] stones;
     private Player players;
 
@@ -69,6 +68,38 @@ public class Board
         for (StoneChain chain : nowPlacing)
         {
             if(chain != null) chain.countLiberties();
+        }
+    }
+
+    public void disableBoard()
+    {
+        for (int i = 0; i < MAX_SIZE; i++) {
+            for (int j = 0; j < MAX_SIZE; j++) {
+                stones[i][j].getButton().setVisible(false);
+            }
+        }
+    }
+
+    public int countScore(Color playerColor)
+    {
+        int score = 0;
+        for (int i = 0; i < MAX_SIZE; i++) {
+            for (int j = 0; j < MAX_SIZE; j++) {
+                if(stones[i][j].getStoneColor() == playerColor)
+                    score++;
+            }
+        }
+        return score;
+    }
+
+    public void newGame()
+    {
+        players.setColor(Color.BLACK);
+        Stone.getTurnCircle().setFill(players.getColor());
+        for (int i = 0; i < MAX_SIZE; i++) {
+            for (int j = 0; j < MAX_SIZE; j++) {
+                stones[i][j].destroyStone();
+            }
         }
     }
 }

@@ -1,10 +1,9 @@
 package sample;
 
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -12,14 +11,18 @@ import javafx.scene.shape.Circle;
 public class Stone
 {
     @FXML private Pane pane;
-    private Button button;
-    private static Player players;
+    @FXML private static Circle turnCircle;     //kolko kolorowe - jaki kolor tego gracza kolej
+    @FXML private static Button passButton;     //przycisk pass
+    @FXML private static Button newGameButton;  //przycisk nowa gra
+    private Button button;                      //przycisk do stawiania kamienia
+    private static Player players;              //gracze
     private static Board board;
     private Color stoneColor;
-    private boolean freePlace;
-    private StoneChain stoneChain;
-    private StonePosition stonePosition;
-    private Circle stone;
+    private boolean freePlace;                  //czy postawiony kamien
+    private StoneChain stoneChain;              //w jakim jest lancuchu
+    private StonePosition stonePosition;        //pozycja kamienia
+    private Circle stone;                       //sam kamien
+    private static int passCount = 0;           //ile pasow
 
     public void initButton(int x, int y)
     {
@@ -31,6 +34,7 @@ public class Stone
         pane.getChildren().add(button);
         button.setOnAction(actionEvent -> {
             freePlace = false;
+            passCount = 0;
             stone = new Circle();
             stone.setRadius(30);
             stone.setLayoutX(button.getLayoutX() + 30);
@@ -38,12 +42,7 @@ public class Stone
             stoneColor = players.getColor();
             stone.setFill(stoneColor);
             stone.setEffect(new DropShadow());
-            stone.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    System.out.println(stoneChain.toString() + " " + stoneChain.getLiberties());
-                }
-            });
+            stone.setOnMouseClicked(mouseEvent -> System.out.println(stoneChain.toString() + " " + stoneChain.getLiberties()));
             button.setVisible(false);
 
             StoneChain[] nearChains = stoneChainsNear();
@@ -51,7 +50,6 @@ public class Stone
             {
                 stoneChain = new StoneChain();
                 stoneChain.addStone(this);
-                //System.out.println(stoneChain.getStoneList());
             }
             else//tutaj trzeba polaczyc ze soba wszystkie lancuchy
             {
@@ -69,14 +67,40 @@ public class Stone
                         }
                     }
                 }
-                //System.out.println(stoneChain.toString());
             }
             pane.getChildren().add(stone);
             board.countAllLiberties();
-            //System.out.println(stonePosition.toString());
             players.flipColor();//to na sam koniec trzeba zeby po wszystkim dopiero gracz sie zmienial
-            //board.turn.setFill(players.getColor());
+            turnCircle.setFill(players.getColor());
         });
+        passButton.setOnAction(actionEvent -> {
+            passCount++;
+            players.flipColor();
+            turnCircle.setFill(players.getColor());
+            if(passCount == 2)
+            {
+                board.disableBoard();
+                passButton.setVisible(false);
+                displayScore();
+            }
+        });
+    }
+
+    public Button getButton() {
+        return button;
+    }
+
+    public static void setPassButton(Button passButton) {
+        Stone.passButton = passButton;
+    }
+
+    public static void setNewGameButton(Button newGameButton) {
+        Stone.newGameButton = newGameButton;
+    }
+
+    public static void setTurnCircle(Circle c)
+    {
+        turnCircle = c;
     }
 
     public static void setPlayers(Player p)
@@ -232,5 +256,21 @@ public class Stone
         stoneColor = null;
         button.setVisible(true);
         stoneChain = null;
+    }
+
+    private void displayScore()
+    {
+        int blackScore = board.countScore(Color.BLACK);
+        int whiteScore = board.countScore(Color.WHITE);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Score");
+        alert.setHeaderText("Scoring type: stone scoring");
+        String score = "Black:\t" + blackScore + "\nWhite:\t" + whiteScore;
+        alert.setContentText(score);
+        alert.showAndWait();
+    }
+
+    public static Circle getTurnCircle() {
+        return turnCircle;
     }
 }
