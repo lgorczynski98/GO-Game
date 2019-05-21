@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.effect.Reflection?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
@@ -14,18 +17,44 @@
    <children>
       <ToolBar fx:id="toolbar" layoutX="30.0" layoutY="659.0" prefHeight="40.0" prefWidth="600.0" style="-fx-background-color: #c19a6b;">
         <items>
-          <Button fx:id="newGameButton" alignment="CENTER_RIGHT" mnemonicParsing="false" style="-fx-background-color: #d2ab7c;" text="New Game" translateX="400.0">
+          <Button fx:id="newGameButton" alignment="CENTER_RIGHT" mnemonicParsing="false" style="-fx-background-color: #d2ab7c;" text="New Game" translateX="400.0" translateY="1.0">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
                <font>
                   <Font size="18.0" />
-               </font></Button>
+               </font>
+               <effect>
+                  <Reflection />
+               </effect>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
             <Button fx:id="passButton" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" style="-fx-background-color: #d2ab7c;" text="Pass" textAlignment="CENTER" translateX="400.0">
                <font>
                   <Font size="18.0" />
-               </font></Button>
+               </font>
+               <effect>
+                  <Reflection />
+               </effect>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
             <Circle id="turn" fx:id="turnCircle" radius="19.0" stroke="BLACK" strokeType="INSIDE" translateX="-200.0" />
+            <CheckBox fx:id="muteCheckBox" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="39.0" prefWidth="92.0" style="-fx-background-color: #d2ab7c; -fx-background-radius: 3;" text="Mute" textAlignment="CENTER" translateX="67.0" translateY="1.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <padding>
+                  <Insets left="5.0" />
+               </padding>
+               <effect>
+                  <Reflection />
+               </effect>
+            </CheckBox>
         </items>
       </ToolBar>
       <GridPane fx:id="gridPane" gridLinesVisible="true" layoutX="30.0" layoutY="30.0" prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: #c19a6b;">
