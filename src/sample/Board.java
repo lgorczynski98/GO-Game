@@ -9,14 +9,16 @@ import java.util.Set;
 
 public class Board
 {
-    public static final int MAX_SIZE = 10;
+    public static int MAX_SIZE;
 
     @FXML private Pane pane;
     private Stone[][] stones;
+    private int[][] previousBoardState;
     private Player players;
 
-    public Board(Pane pane)
+    public Board(Pane pane, int size)
     {
+        this.MAX_SIZE = size;
         this.pane = pane;
         this.players = new Player();
         Stone.setBoard(this);
@@ -99,7 +101,27 @@ public class Board
         for (int i = 0; i < MAX_SIZE; i++) {
             for (int j = 0; j < MAX_SIZE; j++) {
                 stones[i][j].destroyStone();
+                stones[i][j].getButton().setVisible(false);
             }
         }
+    }
+
+    public void rememberState()
+    {
+        previousBoardState = new int[MAX_SIZE][MAX_SIZE];
+        for (int i = 0; i < MAX_SIZE; i++) {
+            for (int j = 0; j < MAX_SIZE; j++) {
+                if(stones[i][j].getStoneColor() == null)    //jak nie ma to 0
+                    previousBoardState[i][j] = 0;
+                else if(stones[i][j].getStoneColor() == Color.BLACK)    //jak czarny to 1
+                    previousBoardState[i][j] = 1;
+                else    //jak bialy to 2
+                    previousBoardState[i][j] = 2;
+            }
+        }
+    }
+
+    public int[][] getPreviousBoardState() {
+        return previousBoardState;
     }
 }

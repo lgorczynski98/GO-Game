@@ -14,6 +14,7 @@ public class Stone
     @FXML private static Circle turnCircle;     //kolko kolorowe - jaki kolor tego gracza kolej
     @FXML private static Button passButton;     //przycisk pass
     @FXML private static Button newGameButton;  //przycisk nowa gra
+    private Circle hint;
     private Button button;                      //przycisk do stawiania kamienia
     private static Player players;              //gracze
     private static Board board;
@@ -22,28 +23,31 @@ public class Stone
     private StoneChain stoneChain;              //w jakim jest lancuchu
     private StonePosition stonePosition;        //pozycja kamienia
     private Circle stone;                       //sam kamien
-    private static int passCount = 0;           //ile pasow
+    private static int passCount = 0;           //ile passow
+    private int boxWidth;
 
     public void initButton(int x, int y)
     {
         stonePosition = new StonePosition(x, y);
-        button.setPrefSize(60, 60);
-        button.setLayoutX(x * 66);
-        button.setLayoutY(y * 66);
+        boxWidth = 600 / (Board.MAX_SIZE - 1);
+        button.setPrefSize(boxWidth - 10, boxWidth - 10);
+        button.setLayoutX(x * boxWidth);          //9x9 --75
+        button.setLayoutY(y * boxWidth);
         button.setOpacity(0);
         pane.getChildren().add(button);
         button.setOnAction(actionEvent -> {
+            board.rememberState();
             freePlace = false;
             passCount = 0;
             stone = new Circle();
-            stone.setRadius(30);
+            stone.setRadius(boxWidth/2 - 2);
             stone.setLayoutX(button.getLayoutX() + 30);
             stone.setLayoutY(button.getLayoutY() + 30);
             stoneColor = players.getColor();
             stone.setFill(stoneColor);
             stone.setEffect(new DropShadow());
-            stone.setOnMouseClicked(mouseEvent -> System.out.println(stoneChain.toString() + " " + stoneChain.getLiberties()));
             button.setVisible(false);
+            stone.setOnMouseClicked(mouseEvent -> System.out.println(stoneChain.toString() + " " + stoneChain.getLiberties()));
 
             StoneChain[] nearChains = stoneChainsNear();
             if(nearChains == null)  //tu jak nie ma zadnego lanucha dookola
@@ -72,6 +76,20 @@ public class Stone
             board.countAllLiberties();
             players.flipColor();//to na sam koniec trzeba zeby po wszystkim dopiero gracz sie zmienial
             turnCircle.setFill(players.getColor());
+        });
+        button.setOnMouseEntered(actionEvent -> {
+            hint = new Circle();
+            hint.setOpacity(0.5);
+            hint.setRadius(boxWidth/2 - 2);
+            hint.setFill(players.getColor());
+            hint.setLayoutX(button.getLayoutX() + 30);
+            hint.setLayoutY(button.getLayoutY() + 30);
+            hint.setMouseTransparent(true);
+            pane.getChildren().add(hint);
+        });
+
+        button.setOnMouseExited(actionEvent -> {
+            pane.getChildren().remove(hint);
         });
         passButton.setOnAction(actionEvent -> {
             passCount++;
