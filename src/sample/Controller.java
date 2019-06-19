@@ -1,8 +1,9 @@
 package sample;
 
+// TODO: 14.06.2019 javadoc comments in StonePosition
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -18,19 +19,54 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/**
+ * Simple Controller Class generated from javafx
+ */
 public class Controller implements Initializable
 {
-
+    /**
+     * Game pane
+     */
     @FXML private Pane pane;
+    /**
+     * Grid for 9x9 game
+     */
     @FXML private GridPane gridPane9;
+    /**
+     * Grid for 13x13 game
+     */
     @FXML private GridPane gridPane13;
+    /**
+     * Hint cirlce showing whose turn it is
+     */
     @FXML private Circle turnCircle;
+    /**
+     * Button to pass turn
+     */
     @FXML private Button passButton;
+    /**
+     * Button to start new game
+     */
     @FXML private Button newGameButton;
+    /**
+     * Check box to mute the music
+     */
     @FXML private CheckBox muteCheckBox;
+
+    /**
+     * Main board of a game
+     */
     private Board board;
+    /**
+     * Media player playing game music
+     */
     private MediaPlayer mediaPlayer;
 
+    /**
+     * Preparing board and media player
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
@@ -60,6 +96,9 @@ public class Controller implements Initializable
         });
     }
 
+    /**
+     *Changing board size
+     */
     private void sizeSelection()
     {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

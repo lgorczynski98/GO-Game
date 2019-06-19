@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"sample","l":"Board"},{"p":"sample","l":"Controller"},{"p":"sample","l":"Main"},{"p":"sample","l":"Player"},{"p":"sample","l":"Position"},{"p":"sample","l":"Stone"},{"p":"sample","l":"StoneChain"},{"p":"sample","l":"StonePosition"}]

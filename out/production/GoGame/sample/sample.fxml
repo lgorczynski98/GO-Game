@@ -40,7 +40,7 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
-            <Circle id="turn" fx:id="turnCircle" radius="19.0" stroke="BLACK" strokeType="INSIDE" translateX="-200.0" />
+            <Circle id="turn" fx:id="turnCircle" radius="19.0" stroke="BLACK" strokeMiterLimit="20.0" strokeType="INSIDE" translateX="-200.0" />
             <CheckBox fx:id="muteCheckBox" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="39.0" prefWidth="92.0" style="-fx-background-color: #d2ab7c; -fx-background-radius: 3;" text="Mute" textAlignment="CENTER" translateX="67.0" translateY="1.0">
                <font>
                   <Font size="18.0" />

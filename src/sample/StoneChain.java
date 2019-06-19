@@ -3,37 +3,48 @@ package sample;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: 18.05.2019 moze dodac zmiene rozmiaru planszy
-
+/**
+ * Contains al the stones in one chain and the number of its liberties
+ */
 public class StoneChain
 {
+    /**
+     * List of stones in the chain
+     */
     private List<Stone> stoneList;
+    /**
+     * Number of chain liberties
+     */
     private int liberties;
 
+    /**
+     * Stone chain constructor
+     */
     public StoneChain()
     {
         this.stoneList = new ArrayList<>();
     }
 
+    /**
+     * Adding stone to the chain after placing it in the right place
+     * @param stone Stone that is added
+     */
     public void addStone(Stone stone)
     {
         stoneList.add(stone);
     }
 
+    /**
+     * Method to get the stones of the stone chain
+     * @return List of stones in the chain
+     */
     public List<Stone> getStoneList() {
         return stoneList;
     }
 
-    public StoneChain copy()
-    {
-        StoneChain copy = new StoneChain();
-        for (Stone stone : this.getStoneList())
-        {
-            copy.addStone(new Stone(stone.getPane(), stone.getStonePosition().getX(), stone.getStonePosition().getY()));
-        }
-        return copy;
-    }
-
+    /**
+     * Method that destroys the stone chain
+     */
     public void destroyChain()
     {
         for (Stone stone : stoneList)
@@ -52,11 +63,9 @@ public class StoneChain
         return ret;
     }
 
-    public void addAll(StoneChain chain)
-    {
-        this.stoneList.addAll(chain.getStoneList());
-    }
-
+    /**
+     * Method that counts liberties of this stone chain
+     */
     public void countLiberties()
     {
         int l = 0;
@@ -79,6 +88,10 @@ public class StoneChain
         }
     }
 
+    /**
+     * Get the liberties of the stone chain
+     * @return liberties
+     */
     public int getLiberties() {
         return liberties;
     }

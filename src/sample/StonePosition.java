@@ -1,11 +1,28 @@
 package sample;
 
+/**
+ * Position of a stone
+ */
 public class StonePosition
 {
+    /**
+     * Enum - in what position type stone is
+     */
     private Position stonePosition;
+    /**
+     * x coordiante of stone on grid
+     */
     private int x;
+    /**
+     * y coordinate of stone on grid
+     */
     private int y;
 
+    /**
+     * Stone position constructor
+     * @param x x coordinate
+     * @param y y coordinate
+     */
     public StonePosition(int x, int y)
     {
         this.x = x;
@@ -36,18 +53,34 @@ public class StonePosition
         return stonePosition.toString();
     }
 
+    /**
+     * Gets position type of a stone
+     * @return Enum stone position
+     */
     public Position getStonePosition() {
         return stonePosition;
     }
 
+    /**
+     * Gets x cooridnate on a grid
+     * @return x coordinate
+     */
     public int getX() {
         return x;
     }
 
+    /**
+     * Gets y cooridnate on a grid
+     * @return y coordinate
+     */
     public int getY() {
         return y;
     }
 
+    /**
+     * Gets the information if stone is placed on the top of a board
+     * @return True if stone is placed on the top of a board
+     */
     public boolean isOnTopWall()
     {
         if(stonePosition == Position.UP_WALL || stonePosition == Position.L_U_CORNER || stonePosition == Position.R_U_CORNER)
@@ -56,6 +89,10 @@ public class StonePosition
             return false;
     }
 
+    /**
+     * Gets the information if stone is placed on the bottom of a board
+     * @return True if stone is placed on the bottom of a board
+     */
     public boolean isOnBottomWall()
     {
         if(stonePosition == Position.DOWN_WALL|| stonePosition == Position.L_D_CORNER || stonePosition == Position.R_D_CORNER)
@@ -64,6 +101,10 @@ public class StonePosition
             return false;
     }
 
+    /**
+     * Gets the information if stone is placed on the left of a board
+     * @return True if stone is placed on the left of a board
+     */
     public boolean isOnLeftWall()
     {
         if(stonePosition == Position.LEFT_WALL || stonePosition == Position.L_U_CORNER || stonePosition == Position.L_D_CORNER)
@@ -72,6 +113,10 @@ public class StonePosition
             return false;
     }
 
+    /**
+     * Gets the information if stone is placed on the right of a board
+     * @return True if stone is placed on the right of a board
+     */
     public boolean isOnRightWall()
     {
         if(stonePosition == Position.RIGHT_WALL || stonePosition == Position.R_U_CORNER || stonePosition == Position.R_D_CORNER)

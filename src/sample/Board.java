@@ -7,15 +7,33 @@ import javafx.scene.paint.Color;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Board class containing all the stones and players
+ */
 public class Board
 {
+    /**
+     * Size of a board - MAX_SIZE x MAX_SIZE
+     */
     public static int MAX_SIZE;
-
+    /**
+     * Game Pane
+     */
     @FXML private Pane pane;
+    /**
+     * Table containing all the stones (places where stone can be placed)
+     */
     private Stone[][] stones;
-    private int[][] previousBoardState;
+    /**
+     * Player whose turn it currently is
+     */
     private Player players;
 
+    /**
+     * Constructor preparing the board
+     * @param pane - game pane
+     * @param size - size of a board
+     */
     public Board(Pane pane, int size)
     {
         this.MAX_SIZE = size;
@@ -31,19 +49,20 @@ public class Board
         }
     }
 
+    /**
+     * Method that return stone which is on the given position
+     * @param x x coordinate
+     * @param y y coordinate
+     * @return Stone
+     */
     public Stone getStone(int x, int y)
     {
         return stones[x][y];
     }
 
-    public boolean stonePlaced(int x, int y)
-    {
-        if(stones[x][y].isPlaced())
-            return true;
-        else
-            return false;
-    }
-
+    /**
+     * Method that counts all the liberties of every stone chain on the board
+     */
     public void countAllLiberties()
     {
         Set<StoneChain> nowPlacing = new HashSet<>();
@@ -73,6 +92,9 @@ public class Board
         }
     }
 
+    /**
+     * Method that disable ability to place stones on the board
+     */
     public void disableBoard()
     {
         for (int i = 0; i < MAX_SIZE; i++) {
@@ -82,6 +104,11 @@ public class Board
         }
     }
 
+    /**
+     * Method count score of player
+     * @param playerColor player whose points are counted
+     * @return player score
+     */
     public int countScore(Color playerColor)
     {
         int score = 0;
@@ -94,6 +121,9 @@ public class Board
         return score;
     }
 
+    /**
+     * Start new game
+     */
     public void newGame()
     {
         players.setColor(Color.BLACK);
@@ -104,24 +134,5 @@ public class Board
                 stones[i][j].getButton().setVisible(false);
             }
         }
-    }
-
-    public void rememberState()
-    {
-        previousBoardState = new int[MAX_SIZE][MAX_SIZE];
-        for (int i = 0; i < MAX_SIZE; i++) {
-            for (int j = 0; j < MAX_SIZE; j++) {
-                if(stones[i][j].getStoneColor() == null)    //jak nie ma to 0
-                    previousBoardState[i][j] = 0;
-                else if(stones[i][j].getStoneColor() == Color.BLACK)    //jak czarny to 1
-                    previousBoardState[i][j] = 1;
-                else    //jak bialy to 2
-                    previousBoardState[i][j] = 2;
-            }
-        }
-    }
-
-    public int[][] getPreviousBoardState() {
-        return previousBoardState;
     }
 }
