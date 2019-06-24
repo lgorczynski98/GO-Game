@@ -1,5 +1,7 @@
 package sample;
 
+import java.util.List;
+
 /**
  * Position of a stone
  */

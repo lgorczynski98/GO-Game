@@ -3,6 +3,7 @@ package sample;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -29,6 +30,8 @@ public class Board
      */
     private Player players;
 
+    public Circle libertiesCircles[][];
+
     /**
      * Constructor preparing the board
      * @param pane - game pane
@@ -45,6 +48,21 @@ public class Board
         for (int i = 0; i < MAX_SIZE; i++) {
             for (int j = 0; j < MAX_SIZE; j++) {
                 stones[i][j] = new Stone(pane, i, j);
+            }
+        }
+
+        int boxWidth = 600 / (MAX_SIZE - 1);
+        libertiesCircles = new Circle[MAX_SIZE][MAX_SIZE];
+        for (int i = 0; i < MAX_SIZE; i++) {
+            for (int j = 0; j < MAX_SIZE; j++) {
+                Circle c = new Circle();
+                c.setRadius(5);
+                c.setFill(Color.RED);
+                c.setLayoutX(i * boxWidth + 30);
+                c.setLayoutY(j * boxWidth + 30);
+                c.setVisible(false);
+                pane.getChildren().add(c);
+                libertiesCircles[i][j] = c;
             }
         }
     }

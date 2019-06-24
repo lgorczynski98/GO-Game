@@ -4,9 +4,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Stone button and circle of a stone
@@ -129,6 +133,29 @@ public class Stone
             board.countAllLiberties();
             players.flipColor();//to na sam koniec trzeba zeby po wszystkim dopiero gracz sie zmienial
             turnCircle.setFill(players.getColor());
+
+            stone.setOnMousePressed(actionClicked -> {      //displaying liberties
+                if(actionClicked.getButton() == MouseButton.SECONDARY)
+                {
+                    System.out.println("prawy myszki wcisniete");
+                    List<Stone> stonesInChain = stoneChain.getStoneList();
+                    for (Stone s: stonesInChain) {
+                        showLiberties(s.stonePosition.getX(), s.stonePosition.getY());
+                    }
+                }
+            });
+
+            stone.setOnMouseReleased(actionClicked -> {
+                if(actionClicked.getButton() == MouseButton.SECONDARY)
+                {
+                    System.out.println("prawy myszki puszczone");
+                    for (int i = 0; i < board.MAX_SIZE; i++) {
+                        for (int j = 0; j < board.MAX_SIZE; j++) {
+                            board.libertiesCircles[i][j].setVisible(false);
+                        }
+                    }
+                }
+            });
         });     //what happens when placins a stone
 
         button.setOnMouseEntered(actionEvent -> {
@@ -218,6 +245,7 @@ public class Stone
      */
     public Stone(Pane pane ,int x, int y)
     {
+
         this.pane = pane;
         button = new Button();
         freePlace = true;
@@ -336,12 +364,40 @@ public class Stone
     }
 
     /**
+     * Checks if stone is on the top of the board
+     * @return Returns true if stone is on the top of the board
+     * @param x x coordinate on the board
+     * @param y y coordinate on the board
+     */
+    private boolean isStoneUP(int x, int y)
+    {
+        if(!stonePosition.isOnTopWall() && board.getStone(x, y - 1).freePlace)
+            return false;
+        else
+            return true;
+    }
+
+    /**
      * Checks if stone is on the bottom of the board
      * @return Returns true if stone is on the bottom of the board
      */
     public boolean isStoneDOWN()
     {
         if(!stonePosition.isOnBottomWall() && board.getStone(stonePosition.getX(), stonePosition.getY() + 1).freePlace)
+            return false;
+        else
+            return true;
+    }
+
+    /**
+     * Checks if stone is on the bottom of the board
+     * @return Returns true if stone is on the bottom of the board
+     * @param x x coordinate on the board
+     * @param y y coordinate on the board
+     */
+    private boolean isStoneDOWN(int x, int y)
+    {
+        if(!stonePosition.isOnBottomWall() && board.getStone(x, y + 1).freePlace)
             return false;
         else
             return true;
@@ -360,12 +416,40 @@ public class Stone
     }
 
     /**
+     * Checks if stone is on the left of the board
+     * @return Returns true if stone is on the left of the board
+     * @param x x coordinate on the board
+     * @param y y coordinate on the board
+     */
+    private boolean isStoneLEFT(int x, int y)
+    {
+        if(!stonePosition.isOnLeftWall() && board.getStone(x - 1, y).freePlace)
+            return false;
+        else
+            return true;
+    }
+
+    /**
      * Checks if stone is on the right of the board
      * @return Returns true if stone is on the right of the board
      */
     public boolean isStoneRIGHT()
     {
         if(!stonePosition.isOnRightWall() && board.getStone(stonePosition.getX() + 1, stonePosition.getY()).freePlace)
+            return false;
+        else
+            return true;
+    }
+
+    /**
+     * Checks if stone is on the right of the board
+     * @return Returns true if stone is on the right of the board
+     * @param x x coordinate on the board
+     * @param y y coordinate on the board
+     */
+    private boolean isStoneRIGHT(int x, int y)
+    {
+        if(!stonePosition.isOnRightWall() && board.getStone(x + 1, y).freePlace)
             return false;
         else
             return true;
@@ -404,5 +488,25 @@ public class Stone
      */
     public static Circle getTurnCircle() {
         return turnCircle;
+    }
+
+    public void showLiberties(int x, int y)
+    {
+        if(!this.isStoneUP(x, y))
+        {
+            board.libertiesCircles[x][ y - 1].setVisible(true);
+        }
+        if(!this.isStoneDOWN(x, y))
+        {
+            board.libertiesCircles[x][ y + 1].setVisible(true);
+        }
+        if(!this.isStoneRIGHT(x, y))
+        {
+            board.libertiesCircles[x + 1][y].setVisible(true);
+        }
+        if(!this.isStoneLEFT(x, y))
+        {
+            board.libertiesCircles[x - 1][y].setVisible(true);
+        }
     }
 }
